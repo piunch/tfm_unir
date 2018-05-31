@@ -1,229 +1,268 @@
-swagger: '2.0'
+---
+swagger: "2.0"
 info:
-  version: 1.0.9-abcd
-  title: Swagger Sample API
-  description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
-  termsOfService: http://helloreverb.com/terms/
+  description: "A sample API that uses a petstore as an example to demonstrate features\
+    \ in the swagger-2.0 specification"
+  version: "1.0.9-abcd"
+  title: "Swagger Sample API"
+  termsOfService: "http://helloreverb.com/terms/"
   contact:
-    name: swagger api team
-    url: http://swagger.io
+    name: "swagger api team"
+    url: "http://swagger.io"
   license:
-    name: Creative Commons 4.0 International
-    url: http://creativecommons.org/licenses/by/4.0/
-basePath: /v1
+    name: "Creative Commons 4.0 International"
+    url: "http://creativecommons.org/licenses/by/4.0/"
+basePath: "/v1"
 schemes:
-  - http
-  - https
+- "http"
+- "https"
 consumes:
-  - application/json
+- "application/json"
 produces:
-  - application/json
-  - application/xml
+- "application/json"
+- "application/xml"
 security:
-  - internalApiKey: []
+- internalApiKey: []
 paths:
   /login:
     post:
-      parameters:
-      - name: login
-        in: formData
-        description: user login
-        required: true
-        type: string
-      - name: pass
-        in: formData
-        description: user password
-        required: true
-        type: string
-      description: Obtiene un token a partir de usuario y contraseña válidos
-      operationId: login
-      security:
-        - internalApiKey: []
+      tags:
+      - "auth_controller"
+      description: "Obtiene un token a partir de usuario y contraseña válidos"
+      operationId: "login"
       produces:
-        - application/json
+      - "application/json"
+      parameters:
+      - name: "login"
+        in: "formData"
+        description: "user login"
+        required: true
+        type: "string"
+      - name: "pass"
+        in: "formData"
+        description: "user password"
+        required: true
+        type: "string"
       responses:
-        "200":
-          description: valid login
+        200:
+          description: "valid login"
           schema:
-            type: string
-        "401":
-          description: invalid login
+            type: "string"
+        401:
+          description: "invalid login"
+      security:
+      - internalApiKey: []
+      x-swagger-router-controller: "swagger_server.controllers.auth_controller"
   /logout:
     delete:
-      description: Revoca un token obtenido con el método /login
-      operationId: logout
-      security:
-        - internalApiKey: []
+      tags:
+      - "auth_controller"
+      description: "Revoca un token obtenido con el método /login"
+      operationId: "logout"
       produces:
-        - application/json
+      - "application/json"
+      parameters: []
       responses:
-        "200":
-          description: revoked
-        "401":
-          description: invalid token
+        200:
+          description: "revoked"
+        401:
+          description: "invalid token"
+      security:
+      - internalApiKey: []
+      x-swagger-router-controller: "swagger_server.controllers.auth_controller"
   /user:
-    post:
-      parameters:
-      - name: login
-        in: formData
-        description: user login
-        required: true
-        type: string
-      - name: fullname
-        in: formData
-        description: user full name
-        required: true
-        type: string
-      - name: password
-        in: formData
-        description: user password
-        required: true
-        type: string
-      description: Crea un nuevo usuario en la BD
-      operationId: add_user
-      security:
-        - internalApiKey: []
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: revoked
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/User'
-        "401":
-          description: invalid token
-        "406":
-          description: invalid data
     get:
-      description: Obtiene los datos de un usuario existente
-      operationId: get_user
-      security:
-        - internalApiKey: []
+      tags:
+      - "user_controller"
+      description: "Obtiene los datos de un usuario existente"
+      operationId: "get_user"
       produces:
-        - application/json
+      - "application/json"
+      parameters: []
       responses:
-        "200":
-          description: revoked
+        200:
+          description: "revoked"
           schema:
-            type: array
+            type: "array"
             items:
-              $ref: '#/definitions/User'
-        "401":
-          description: invalid token
+              $ref: "#/definitions/User"
+        401:
+          description: "invalid token"
+      security:
+      - internalApiKey: []
+      x-swagger-router-controller: "swagger_server.controllers.user_controller"
+    post:
+      tags:
+      - "user_controller"
+      description: "Crea un nuevo usuario en la BD"
+      operationId: "add_user"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "login"
+        in: "formData"
+        description: "user login"
+        required: true
+        type: "string"
+      - name: "fullname"
+        in: "formData"
+        description: "user full name"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "user password"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "revoked"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        401:
+          description: "invalid token"
+        406:
+          description: "invalid data"
+      security:
+      - internalApiKey: []
+      x-swagger-router-controller: "swagger_server.controllers.user_controller"
   /transaction:
-    post:
-      parameters:
-      - name: aumount
-        in: formData
-        description: transaction amount
-        required: true
-        type: string
-      - name: description
-        in: formData
-        description: transaction description
-        required: false
-        type: string
-      description: Añade una nueva transacción en la cuenta del usuario
-      operationId: add_transaction
-      security:
-        - internalApiKey: []
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: saved
-          schema:
-            $ref: '#/definitions/Transaction'
-        "401":
-          description: invalid token
-        "406":
-          description: invalid data
     get:
-      parameters:
-      - name: from_date
-        in: query
-        description: from date filter
-        required: false
-        type: string
-      description: Obtiene una lista de las últimas transacciones del usuario
-      operationId: get_transactions
-      security:
-        - internalApiKey: []
+      tags:
+      - "transaction_controller"
+      description: "Obtiene una lista de las últimas transacciones del usuario"
+      operationId: "get_transactions"
       produces:
-        - application/json
+      - "application/json"
+      parameters:
+      - name: "from_date"
+        in: "query"
+        description: "from date filter"
+        required: false
+        type: "string"
       responses:
-        "200":
-          description: list of transactions
+        200:
+          description: "list of transactions"
           schema:
-            type: array
+            type: "array"
             items:
-              $ref: '#/definitions/Transaction'
-        "401":
-          description: invalid token
-        "406":
-          description: invalid data
+              $ref: "#/definitions/Transaction"
+        401:
+          description: "invalid token"
+        406:
+          description: "invalid data"
+      security:
+      - internalApiKey: []
+      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
+    post:
+      tags:
+      - "transaction_controller"
+      description: "Añade una nueva transacción en la cuenta del usuario"
+      operationId: "add_transaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "aumount"
+        in: "formData"
+        description: "transaction amount"
+        required: true
+        type: "string"
+      - name: "description"
+        in: "formData"
+        description: "transaction description"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "saved"
+          schema:
+            $ref: "#/definitions/Transaction"
+        401:
+          description: "invalid token"
+        406:
+          description: "invalid data"
+      security:
+      - internalApiKey: []
+      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
   /balace:
     get:
-      description: Obtiene el estado actual de la cuenta del usuario
-      operationId: get_balance
-      security:
-        - internalApiKey: []
+      tags:
+      - "transaction_controller"
+      description: "Obtiene el estado actual de la cuenta del usuario"
+      operationId: "get_balance"
       produces:
-        - application/json
+      - "application/json"
+      parameters: []
       responses:
-        "200":
-          description: last balance
+        200:
+          description: "last balance"
           schema:
-            $ref: '#/definitions/Balance'
-        "401":
-          description: invalid token
-
-          
+            $ref: "#/definitions/Balance"
+        401:
+          description: "invalid token"
+      security:
+      - internalApiKey: []
+      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
 securityDefinitions:
   internalApiKey:
-    type: apiKey
-    in: header
-    name: api_key
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
 definitions:
   User:
-    type: object
+    type: "object"
     properties:
       id:
-        type: integer
-        format: int32
+        type: "integer"
+        format: "int32"
       login:
-        type: string
+        type: "string"
       fullname:
-        type: string
+        type: "string"
+    example:
+      id: 0
+      fullname: "fullname"
+      login: "login"
   Transaction:
-    type: object
+    type: "object"
     properties:
       id:
-        type: integer
-        format: int32
+        type: "integer"
+        format: "int32"
       account_id:
-        type: integer
-        format: int32
+        type: "integer"
+        format: "int32"
       amount:
-        type: integer
-        format: int32
+        type: "integer"
+        format: "int32"
       description:
-        type: string
+        type: "string"
       current_balance:
-        type: integer
-        format: int32
+        type: "integer"
+        format: "int32"
       trasnaction_date:
-        type: string
+        type: "string"
+    example:
+      amount: 1
+      account_id: 6
+      description: "description"
+      current_balance: 5
+      id: 0
+      trasnaction_date: "trasnaction_date"
   Balance:
-    type: object
+    type: "object"
     properties:
       account_id:
-        type: integer
-        format: int32
+        type: "integer"
+        format: "int32"
       current_balance:
-        type: integer
-        format: int32
+        type: "integer"
+        format: "int32"
       last_trasnaction_date:
-        type: string
+        type: "string"
+    example:
+      account_id: 0
+      current_balance: 6
+      last_trasnaction_date: "last_trasnaction_date"

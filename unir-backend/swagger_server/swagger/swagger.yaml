@@ -26,6 +26,8 @@ security:
 paths:
   /login:
     post:
+      tags:
+      - "auth_controller"
       description: "Obtiene un token a partir de usuario y contraseña válidos"
       operationId: "login"
       produces:
@@ -50,9 +52,11 @@ paths:
           description: "invalid login"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+      x-swagger-router-controller: "swagger_server.controllers.auth_controller"
   /logout:
     delete:
+      tags:
+      - "auth_controller"
       description: "Revoca un token obtenido con el método /login"
       operationId: "logout"
       produces:
@@ -65,9 +69,11 @@ paths:
           description: "invalid token"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+      x-swagger-router-controller: "swagger_server.controllers.auth_controller"
   /user:
     get:
+      tags:
+      - "user_controller"
       description: "Obtiene los datos de un usuario existente"
       operationId: "get_user"
       produces:
@@ -84,8 +90,10 @@ paths:
           description: "invalid token"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+      x-swagger-router-controller: "swagger_server.controllers.user_controller"
     post:
+      tags:
+      - "user_controller"
       description: "Crea un nuevo usuario en la BD"
       operationId: "add_user"
       produces:
@@ -119,9 +127,11 @@ paths:
           description: "invalid data"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+      x-swagger-router-controller: "swagger_server.controllers.user_controller"
   /transaction:
     get:
+      tags:
+      - "transaction_controller"
       description: "Obtiene una lista de las últimas transacciones del usuario"
       operationId: "get_transactions"
       produces:
@@ -145,8 +155,10 @@ paths:
           description: "invalid data"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
     post:
+      tags:
+      - "transaction_controller"
       description: "Añade una nueva transacción en la cuenta del usuario"
       operationId: "add_transaction"
       produces:
@@ -173,9 +185,11 @@ paths:
           description: "invalid data"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
   /balace:
     get:
+      tags:
+      - "transaction_controller"
       description: "Obtiene el estado actual de la cuenta del usuario"
       operationId: "get_balance"
       produces:
@@ -190,7 +204,7 @@ paths:
           description: "invalid token"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
 securityDefinitions:
   internalApiKey:
     type: "apiKey"
