@@ -131,7 +131,7 @@ resource "aws_instance" "frontend_server_1" {
   ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_frontend_key}"
-  associate_public_ip_address = "false"
+  associate_public_ip_address = "true"
   availability_zone           = "us-east-2c"
 
   tags {
@@ -146,7 +146,7 @@ resource "aws_instance" "frontend_server_2" {
   ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_frontend_key}"
-  associate_public_ip_address = "false"
+  associate_public_ip_address = "true"
   availability_zone           = "us-east-2c"
 
   tags {
