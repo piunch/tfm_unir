@@ -1,3 +1,4 @@
+//ddd
 output "front_lb_dns" {
   value = "${aws_elb.frontend_lb.dns_name}"
 }
