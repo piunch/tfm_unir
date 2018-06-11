@@ -1,4 +1,3 @@
-// DNS del balanceador de carga del frontend
 output "front_lb_dns" {
   value = "${aws_elb.frontend_lb.dns_name}"
 }
