@@ -31,7 +31,7 @@ paths:
         description: "user login"
         required: true
         type: "string"
-      - name: "pass"
+      - name: "password"
         in: "formData"
         description: "user password"
         required: true
@@ -43,8 +43,6 @@ paths:
             type: "string"
         401:
           description: "invalid login"
-      security:
-      - internalApiKey: []
       x-swagger-router-controller: "swagger_server.controllers.auth"
   /logout:
     delete:
