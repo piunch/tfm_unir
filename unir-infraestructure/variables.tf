@@ -5,3 +5,5 @@ variable "base_ami_server" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_region" {}
+variable "vpc_id" {}
+variable "base_ami_database" {}
