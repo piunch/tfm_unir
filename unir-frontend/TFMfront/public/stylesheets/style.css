@@ -1,3 +1,6 @@
+body {
+  font-family: 'Karla', sans-serif;  
+}
 .account-box
 {
     border: 2px solid rgba(153, 153, 153, 0.75);
@@ -43,4 +46,13 @@
 }
 .boxtitle {
   color: #7e7589;
+}
+.jumbotron-index {
+  padding: 2rem 1rem;
+  padding-top: 2rem;
+  padding-right: 1rem;
+  padding-bottom: 2rem;
+  padding-left: 1rem;
+  background-color: #41B3A3;
+  color: #E8A87C;
 }
