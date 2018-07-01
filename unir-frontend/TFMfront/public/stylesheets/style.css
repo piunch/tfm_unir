@@ -56,3 +56,8 @@ body {
   background-color: #41B3A3;
   color: #E8A87C;
 }
+.btn-trx {
+  background-color: #41b3a3;
+  border-color: #018c78;
+  color: white;
+}
