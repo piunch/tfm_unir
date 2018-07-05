@@ -1,6 +1,7 @@
 import connexion
 import six
 
+
 from swagger_server.models.user import User  # noqa: E501
 from swagger_server import util
 
@@ -19,6 +20,8 @@ def add_user(login, fullname, password):  # noqa: E501
 
     :rtype: List[User]
     """
+
+
     return 'do some magic!'
 
 

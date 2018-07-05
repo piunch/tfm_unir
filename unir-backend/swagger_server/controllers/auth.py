@@ -58,3 +58,4 @@ def get_token_secret():
     secret_key = config['AUTH']['TOKEN_KEY']
 
     return secret_key
+    

@@ -1,5 +1,6 @@
 import connexion
 import six
+import swagger_server.controllers.bbdd as bd
 
 from swagger_server.models.balance import Balance  # noqa: E501
 from swagger_server.models.transaction import Transaction  # noqa: E501
@@ -29,6 +30,8 @@ def get_balance():  # noqa: E501
 
     :rtype: Balance
     """
+    bd.select("select * from ACCOUNT;",())
+
     return 'do some magic!'
 
 
