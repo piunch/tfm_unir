@@ -6,15 +6,13 @@ from swagger_server import util
 from json import JSONEncoder
 
 
-def login(login, password):
+def login(credentials):  # noqa: E501
     """login
 
     Obtiene un token a partir de usuario y contraseña válidos # noqa: E501
 
-    :param login: user login
-    :type login: str
-    :param _pass: user password
-    :type _pass: str
+    :param credentials: user login
+    :type credentials: dict | bytes
 
     :rtype: str
     """
@@ -58,3 +56,4 @@ def get_token_secret():
     secret_key = config['AUTH']['TOKEN_KEY']
 
     return secret_key
+    

@@ -6,24 +6,23 @@ from flask import json
 from six import BytesIO
 
 from swagger_server.models.user import User  # noqa: E501
+from swagger_server.models.user_register_data import UserRegisterData  # noqa: E501
 from swagger_server.test import BaseTestCase
 
 
-class TestUserControllerController(BaseTestCase):
-    """UserControllerController integration test stubs"""
+class TestUserController(BaseTestCase):
+    """UserController integration test stubs"""
 
     def test_add_user(self):
         """Test case for add_user
 
         
         """
-        data = dict(login='login_example',
-                    fullname='fullname_example',
-                    password='password_example')
+        userData = UserRegisterData()
         response = self.client.open(
             '/v1/user',
             method='POST',
-            data=data,
+            data=json.dumps(userData),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

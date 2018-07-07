@@ -1,24 +1,24 @@
 import connexion
 import six
 
+
 from swagger_server.models.user import User  # noqa: E501
+from swagger_server.models.user_register_data import UserRegisterData  # noqa: E501
 from swagger_server import util
 
 
-def add_user(login, fullname, password):  # noqa: E501
+def add_user(userData):  # noqa: E501
     """add_user
 
     Crea un nuevo usuario en la BD # noqa: E501
 
-    :param login: user login
-    :type login: str
-    :param fullname: user full name
-    :type fullname: str
-    :param password: user password
-    :type password: str
+    :param userData: user login
+    :type userData: dict | bytes
 
     :rtype: List[User]
     """
+    if connexion.request.is_json:
+        userData = UserRegisterData.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 

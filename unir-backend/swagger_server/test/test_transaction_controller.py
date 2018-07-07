@@ -7,23 +7,23 @@ from six import BytesIO
 
 from swagger_server.models.balance import Balance  # noqa: E501
 from swagger_server.models.transaction import Transaction  # noqa: E501
+from swagger_server.models.transaction_data import TransactionData  # noqa: E501
 from swagger_server.test import BaseTestCase
 
 
-class TestTransactionControllerController(BaseTestCase):
-    """TransactionControllerController integration test stubs"""
+class TestTransactionController(BaseTestCase):
+    """TransactionController integration test stubs"""
 
     def test_add_transaction(self):
         """Test case for add_transaction
 
         
         """
-        data = dict(aumount='aumount_example',
-                    description='description_example')
+        transactionData = TransactionData()
         response = self.client.open(
             '/v1/transaction',
             method='POST',
-            data=data,
+            data=json.dumps(transactionData),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
