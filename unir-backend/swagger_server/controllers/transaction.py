@@ -21,8 +21,11 @@ def add_transaction(transactionData):  # noqa: E501
     """
     if connexion.request.is_json:
         transactionData = TransactionData.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
 
+    query = "INSERT INTO TRANSACTIONS (USERID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE) VALUES (1,%s,%s,%s,%s,%s);"
+    
+    return 'do some magic!'
+11
 
 def get_balance():  # noqa: E501
     """get_balance
@@ -36,9 +39,9 @@ def get_balance():  # noqa: E501
     user_id = 1
 
     # formar la query para sacar la última transacción
-    query = "SELECT ACCOUNTID,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %d ORDER BY TRANSACTIONDATE DESC LIMIT 1;"
-    params = (user_id)
-    query_result = bd.select(query,params)
+    query = "SELECT ACCOUNTID,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC LIMIT 1;"
+    params = (int(user_id),)
+    query_result = bd.exec(query,params)
 
     if query_result is None or len(query_result) < 1:
         return jsonify(Balance())
@@ -62,4 +65,28 @@ def get_transactions(from_date=None):  # noqa: E501
 
     :rtype: List[Transaction]
     """
-    return 'do some magic!'
+
+    user_id = 1
+
+    if from_date is None:
+        query = "SELECT RANSACTIONID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC;"
+        params = (user_id,)
+    else:
+        query = "SELECT TRANSACTIONID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s AND TRANSACTIONDATE >= %s ORDER BY TRANSACTIONDATE DESC;"
+        params = (user_id, from_date,)
+
+    query_result = bd.exec(query,params)
+    transactions = []
+
+    for row in query_result:
+        id = row[0]
+        account = row[1]
+        amount = row[2]
+        description = row[3]
+        balance = row[4]
+        date = row[5]
+
+        transaction = Transaction( id, account, amount, description, balance, date)
+        transactions.append(transaction)
+    
+    return jsonify(transactions)

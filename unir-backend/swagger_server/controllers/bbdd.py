@@ -2,7 +2,7 @@ import mysql.connector
 
 from mysql.connector import errorcode
 
-def select(query, args):
+def exec(query, args):
     
     try:    # Abrir la conexión
         
@@ -24,6 +24,10 @@ def select(query, args):
         return None
 
     cursor = cnx.cursor()
+    print("QUERY {")
+    print(query)
+    print(args)
+    print("}")
     cursor.execute(query, args)
 
     results = []
@@ -33,5 +37,4 @@ def select(query, args):
 
     cursor.close()
     cnx.close()
-    print(results)
     return results
