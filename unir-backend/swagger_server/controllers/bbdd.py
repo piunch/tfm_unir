@@ -25,8 +25,8 @@ def select(query, args):
 
     cursor = cnx.cursor()
     print("SELECT {")
-    print(query)
-    print(args)
+    print("\t" + str(query))
+    print("\t" + str(args))
     print("}")
     cursor.execute(query, args)
 
@@ -62,8 +62,8 @@ def exec(query, args):
 
     cursor = cnx.cursor()
     print("EXEC {")
-    print(query)
-    print(args)
+    print("\t" + str(query))
+    print("\t" + str(args))
     print("}")
     cursor.execute(query, args)
 

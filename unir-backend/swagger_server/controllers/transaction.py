@@ -35,12 +35,31 @@ def add_transaction(transactionData):  # noqa: E501
     
     account = query_result[0][0]
 
+    if len(transactionData.description) > 128:
+        return 'Descripción demasiado larga', 406
+
     # Insertar la nueva transacción
     query = "INSERT INTO TRANSACTIONS (USERID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE) SELECT USERID,%s,%s,%s,CURRENTBALANCE + %s,CURRENT_TIMESTAMP FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC LIMIT 1"
-    params = (int(account), int(transactionData.amount), str(transactionData.description), int(transactionData.amount), int(user_id),)
+    params = (int(account), int(transactionData.amount), str(transactionData.description).upper(), int(transactionData.amount), int(user_id),)
     bd.exec(query,params)
 
-    return 'OK', 200
+    # formar la query para sacar la nueva transacción
+    query = "SELECT ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE,TRANSACTIONID FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC LIMIT 1;"
+    params = (int(user_id),)
+    query_result = bd.select(query,params)
+
+    if query_result is None or len(query_result) < 1:
+        return "No se realizó el insert", 500
+
+    account = query_result[0][0]
+    balance = query_result[0][1]
+    amount = query_result[0][2]
+    description = query_result[0][3]
+    date = query_result[0][4]
+    transaction_id = query_result[0][5]
+    transaction = Transaction(transaction_id, account, amount, description, balance, date)
+        
+    return jsonify(transaction), 200
 
 
 def get_balance():  # noqa: E501
@@ -60,7 +79,7 @@ def get_balance():  # noqa: E501
     query_result = bd.select(query,params)
 
     if query_result is None or len(query_result) < 1:
-        return jsonify(None)
+        return None, 500
     
     # Obtener los datos y crear el objeto para la respuesta
     account_id = query_result[0][0]
@@ -68,7 +87,7 @@ def get_balance():  # noqa: E501
     transaction_date = query_result[0][2]
     balance = Balance(account_id, current_balance, transaction_date)
 
-    return jsonify(balance)
+    return jsonify(balance), 200
 
 
 def get_transactions(from_date=None):  # noqa: E501
@@ -102,7 +121,7 @@ def get_transactions(from_date=None):  # noqa: E501
         balance = row[4]
         date = row[5]
 
-        transaction = Transaction( id, account, amount, description, balance, date)
+        transaction = Transaction( id, account, amount,  description, balance, date)
         transactions.append(transaction)
     
-    return jsonify(transactions)
+    return jsonify(transactions), 200

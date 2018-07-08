@@ -19,6 +19,11 @@ def add_user(userData):  # noqa: E501
     """
     if connexion.request.is_json:
         userData = UserRegisterData.from_dict(connexion.request.get_json())  # noqa: E501
+
+    # Comprobamos que todos los datos sean válidos
+    if userData is None or userData.account is None or userData.fullname is None or userData.login is None or userData.password is None:
+        return "faltan datos en userData", 406
+
     return 'do some magic!'
 
 
