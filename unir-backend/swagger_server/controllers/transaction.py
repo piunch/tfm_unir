@@ -105,7 +105,7 @@ def get_transactions(from_date=None):  # noqa: E501
 
     if from_date is None:
         query = "SELECT TRANSACTIONID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC;"
-        params = (user_id,)
+        params = (int(user_id),)
     else:
         query = "SELECT TRANSACTIONID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s AND TRANSACTIONDATE >= %s ORDER BY TRANSACTIONDATE DESC;"
         params = (user_id, from_date,)
@@ -113,15 +113,16 @@ def get_transactions(from_date=None):  # noqa: E501
     query_result = bd.select(query,params)
     transactions = []
 
-    for row in query_result:
-        id = row[0]
-        account = row[1]
-        amount = row[2]
-        description = row[3]
-        balance = row[4]
-        date = row[5]
+    if query_result is not None:
+        for row in query_result:
+            id = row[0]
+            account = row[1]
+            amount = row[2]
+            description = row[3]
+            balance = row[4]
+            date = row[5]
 
-        transaction = Transaction( id, account, amount,  description, balance, date)
-        transactions.append(transaction)
+            transaction = Transaction( id, account, amount,  description, balance, date)
+            transactions.append(transaction)
     
     return jsonify(transactions), 200
