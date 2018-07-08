@@ -1,17 +1,10 @@
 ---
 swagger: "2.0"
 info:
-  description: "A sample API that uses a petstore as an example to demonstrate features\
-    \ in the swagger-2.0 specification"
   version: "1.0.9-abcd"
-  title: "Swagger Sample API"
-  termsOfService: "http://helloreverb.com/terms/"
+  title: "TFM UNIR"
   contact:
-    name: "swagger api team"
-    url: "http://swagger.io"
-  license:
-    name: "Creative Commons 4.0 International"
-    url: "http://creativecommons.org/licenses/by/4.0/"
+    name: "Jorge Muñoz y Javier Muñoz"
 basePath: "/v1"
 schemes:
 - "http"
@@ -27,22 +20,18 @@ paths:
   /login:
     post:
       tags:
-      - "auth_controller"
+      - "Auth"
       description: "Obtiene un token a partir de usuario y contraseña válidos"
       operationId: "login"
       produces:
       - "application/json"
       parameters:
-      - name: "login"
-        in: "formData"
+      - in: "body"
+        name: "credentials"
         description: "user login"
         required: true
-        type: "string"
-      - name: "pass"
-        in: "formData"
-        description: "user password"
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/Credentials"
       responses:
         200:
           description: "valid login"
@@ -50,13 +39,11 @@ paths:
             type: "string"
         401:
           description: "invalid login"
-      security:
-      - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.auth_controller"
+      x-swagger-router-controller: "swagger_server.controllers.auth"
   /logout:
     delete:
       tags:
-      - "auth_controller"
+      - "Auth"
       description: "Revoca un token obtenido con el método /login"
       operationId: "logout"
       produces:
@@ -69,11 +56,11 @@ paths:
           description: "invalid token"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.auth_controller"
+      x-swagger-router-controller: "swagger_server.controllers.auth"
   /user:
     get:
       tags:
-      - "user_controller"
+      - "User"
       description: "Obtiene los datos de un usuario existente"
       operationId: "get_user"
       produces:
@@ -90,30 +77,21 @@ paths:
           description: "invalid token"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.user_controller"
+      x-swagger-router-controller: "swagger_server.controllers.user"
     post:
       tags:
-      - "user_controller"
+      - "User"
       description: "Crea un nuevo usuario en la BD"
       operationId: "add_user"
       produces:
       - "application/json"
       parameters:
-      - name: "login"
-        in: "formData"
+      - in: "body"
+        name: "userData"
         description: "user login"
         required: true
-        type: "string"
-      - name: "fullname"
-        in: "formData"
-        description: "user full name"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "formData"
-        description: "user password"
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/UserRegisterData"
       responses:
         200:
           description: "revoked"
@@ -127,11 +105,11 @@ paths:
           description: "invalid data"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.user_controller"
+      x-swagger-router-controller: "swagger_server.controllers.user"
   /transaction:
     get:
       tags:
-      - "transaction_controller"
+      - "Transaction"
       description: "Obtiene una lista de las últimas transacciones del usuario"
       operationId: "get_transactions"
       produces:
@@ -155,25 +133,21 @@ paths:
           description: "invalid data"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
+      x-swagger-router-controller: "swagger_server.controllers.transaction"
     post:
       tags:
-      - "transaction_controller"
+      - "Transaction"
       description: "Añade una nueva transacción en la cuenta del usuario"
       operationId: "add_transaction"
       produces:
       - "application/json"
       parameters:
-      - name: "aumount"
-        in: "formData"
+      - in: "body"
+        name: "transactionData"
         description: "transaction amount"
         required: true
-        type: "string"
-      - name: "description"
-        in: "formData"
-        description: "transaction description"
-        required: false
-        type: "string"
+        schema:
+          $ref: "#/definitions/TransactionData"
       responses:
         200:
           description: "saved"
@@ -185,11 +159,11 @@ paths:
           description: "invalid data"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
+      x-swagger-router-controller: "swagger_server.controllers.transaction"
   /balace:
     get:
       tags:
-      - "transaction_controller"
+      - "Transaction"
       description: "Obtiene el estado actual de la cuenta del usuario"
       operationId: "get_balance"
       produces:
@@ -204,13 +178,23 @@ paths:
           description: "invalid token"
       security:
       - internalApiKey: []
-      x-swagger-router-controller: "swagger_server.controllers.transaction_controller"
+      x-swagger-router-controller: "swagger_server.controllers.transaction"
 securityDefinitions:
   internalApiKey:
     type: "apiKey"
     name: "api_key"
     in: "header"
 definitions:
+  Credentials:
+    type: "object"
+    properties:
+      user:
+        type: "string"
+      password:
+        type: "string"
+    example:
+      password: "password"
+      user: "user"
   User:
     type: "object"
     properties:
@@ -225,6 +209,33 @@ definitions:
       id: 0
       fullname: "fullname"
       login: "login"
+  UserRegisterData:
+    type: "object"
+    properties:
+      login:
+        type: "string"
+      fullname:
+        type: "string"
+      password:
+        type: "string"
+      account:
+        type: "string"
+    example:
+      password: "password"
+      fullname: "fullname"
+      login: "login"
+      account: "ES123123123123132"
+  TransactionData:
+    type: "object"
+    properties:
+      amount:
+        type: "integer"
+        format: "int32"
+      description:
+        type: "string"
+    example:
+      amount: 0
+      description: "description"
   Transaction:
     type: "object"
     properties:
