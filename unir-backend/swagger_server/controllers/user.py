@@ -5,6 +5,7 @@ import hashlib
 
 from swagger_server.models.user import User  # noqa: E501
 from swagger_server.models.user_register_data import UserRegisterData  # noqa: E501
+from swagger_server.controllers.token import check_crentials_token
 from swagger_server import util
 from flask import jsonify
 
@@ -92,7 +93,12 @@ def get_user():  # noqa: E501
     :rtype: List[User]
     """
 
-    user_id = 1
+    token = connexion.request.headers['api_key']
+    user_id = check_crentials_token(token)
+    
+    if user_id is None:
+        print("Intento de acceso con token incorrecto")
+        return "Invalid credentials", 401
 
     # Obtenemos los datos del usuario
     query = "SELECT FULLNAME, USERID, USERNAME FROM USER WHERE USERID = %s"

@@ -5,8 +5,10 @@ import swagger_server.controllers.bbdd as bd
 from swagger_server.models.balance import Balance  # noqa: E501
 from swagger_server.models.transaction import Transaction  # noqa: E501
 from swagger_server.models.transaction_data import TransactionData  # noqa: E501
+from swagger_server.controllers.token import check_crentials_token
 from swagger_server import util
 from flask import jsonify
+
 
 
 def add_transaction(transactionData):  # noqa: E501
@@ -20,7 +22,12 @@ def add_transaction(transactionData):  # noqa: E501
     :rtype: Transaction
     """
 
-    user_id = 1
+    token = connexion.request.headers['api_key']
+    user_id = check_crentials_token(token)
+    
+    if user_id is None:
+        print("Intento de acceso con token incorrecto")
+        return "Invalid credentials", 401
 
     if connexion.request.is_json:
         transactionData = TransactionData.from_dict(connexion.request.get_json())  # noqa: E501
@@ -71,7 +78,12 @@ def get_balance():  # noqa: E501
     :rtype: Balance
     """
 
-    user_id = 1
+    token = connexion.request.headers['api_key']
+    user_id = check_crentials_token(token)
+    
+    if user_id is None:
+        print("Intento de acceso con token incorrecto")
+        return "Invalid credentials", 401
 
     # formar la query para sacar la última transacción
     query = "SELECT ACCOUNTID,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC LIMIT 1;"
@@ -101,7 +113,12 @@ def get_transactions(from_date=None):  # noqa: E501
     :rtype: List[Transaction]
     """
 
-    user_id = 1
+    token = connexion.request.headers['api_key']
+    user_id = check_crentials_token(token)
+    
+    if user_id is None:
+        print("Intento de acceso con token incorrecto")
+        return "Invalid credentials", 401
 
     if from_date is None:
         query = "SELECT TRANSACTIONID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC;"
