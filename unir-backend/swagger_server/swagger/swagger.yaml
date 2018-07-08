@@ -224,6 +224,7 @@ definitions:
       password: "password"
       fullname: "fullname"
       login: "login"
+      account: "ES123123123123132"
   TransactionData:
     type: "object"
     properties:
