@@ -19,13 +19,29 @@ def add_transaction(transactionData):  # noqa: E501
 
     :rtype: Transaction
     """
+
+    user_id = 1
+
     if connexion.request.is_json:
         transactionData = TransactionData.from_dict(connexion.request.get_json())  # noqa: E501
 
-    query = "INSERT INTO TRANSACTIONS (USERID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE) VALUES (1,%s,%s,%s,%s,%s);"
+    # Obtenemos la cuenta del usuario
+    query = "SELECT ACCOUNTID FROM ACCOUNT WHERE USERID = %s"
+    params = (int(user_id),)
+    query_result = bd.select(query,params)
     
-    return 'do some magic!'
-11
+    if query_result is None or len(query_result) < 1:
+        return 'No se encontró el usuario o la cuenta del usuario', 406
+    
+    account = query_result[0][0]
+
+    # Insertar la nueva transacción
+    query = "INSERT INTO TRANSACTIONS (USERID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE) SELECT USERID,%s,%s,%s,CURRENTBALANCE + %s,CURRENT_TIMESTAMP FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC LIMIT 1"
+    params = (int(account), int(transactionData.amount), str(transactionData.description), int(transactionData.amount), int(user_id),)
+    bd.exec(query,params)
+
+    return 'OK', 200
+
 
 def get_balance():  # noqa: E501
     """get_balance
@@ -41,10 +57,10 @@ def get_balance():  # noqa: E501
     # formar la query para sacar la última transacción
     query = "SELECT ACCOUNTID,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s ORDER BY TRANSACTIONDATE DESC LIMIT 1;"
     params = (int(user_id),)
-    query_result = bd.exec(query,params)
+    query_result = bd.select(query,params)
 
     if query_result is None or len(query_result) < 1:
-        return jsonify(Balance())
+        return jsonify(None)
     
     # Obtener los datos y crear el objeto para la respuesta
     account_id = query_result[0][0]
@@ -75,7 +91,7 @@ def get_transactions(from_date=None):  # noqa: E501
         query = "SELECT TRANSACTIONID,ACCOUNTID,AMOUNT,DESCRIPTION,CURRENTBALANCE,TRANSACTIONDATE FROM TRANSACTIONS WHERE USERID = %s AND TRANSACTIONDATE >= %s ORDER BY TRANSACTIONDATE DESC;"
         params = (user_id, from_date,)
 
-    query_result = bd.exec(query,params)
+    query_result = bd.select(query,params)
     transactions = []
 
     for row in query_result:
