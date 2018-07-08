@@ -1,32 +1,40 @@
 import mysql.connector
+import configparser
 
 from mysql.connector import errorcode
 
-def exec(query, args):
+def select(query, args):
     
     try:    # Abrir la conexión
         
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        bd_user = config['BBDD']['USER']
+        bd_password = config['BBDD']['PASSWORD']
+        bd_host = config['BBDD']['HOST']
+        bd_name = config['BBDD']['DATABASE']
+        
         cnx = mysql.connector.connect(
-                                    user='tfmunir', 
-                                    password='achusico123',
-                                    host='172.17.0.2',
-                                    database='TFMUNIRBD')                           
+                                user=bd_user, 
+                                password=bd_password, 
+                                host=bd_host, 
+                                database=bd_name)                           
     
     except mysql.connector.Error as err: # en caso de error
         
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
+            print("Error en las credenciales de la BD")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
+            print("No se encuentra la BD")
         else:
             print(err)
         
         return None
 
     cursor = cnx.cursor()
-    print("QUERY {")
-    print(query)
-    print(args)
+    print("SELECT {")
+    print("\t" + str(query))
+    print("\t" + str(args))
     print("}")
     cursor.execute(query, args)
 
@@ -38,3 +46,44 @@ def exec(query, args):
     cursor.close()
     cnx.close()
     return results
+
+def exec(query, args):
+    
+    try:    # Abrir la conexión
+        
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        bd_user = config['BBDD']['USER']
+        bd_password = config['BBDD']['PASSWORD']
+        bd_host = config['BBDD']['HOST']
+        bd_name = config['BBDD']['DATABASE']
+        
+        cnx = mysql.connector.connect(
+                                user=bd_user, 
+                                password=bd_password, 
+                                host=bd_host, 
+                                database=bd_name)                     
+    
+    except mysql.connector.Error as err: # en caso de error
+        
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Error en las credenciales de la BD")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("No se encuentra la BD")
+        else:
+            print(err)
+        
+        return None
+
+    cursor = cnx.cursor()
+    print("EXEC {")
+    print("\t" + str(query))
+    print("\t" + str(args))
+    print("}")
+    cursor.execute(query, args)
+
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+    return None

@@ -15,7 +15,7 @@ class UserRegisterData(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, login: str=None, fullname: str=None, password: str=None):  # noqa: E501
+    def __init__(self, login: str=None, fullname: str=None, password: str=None, account: str=None):  # noqa: E501
         """UserRegisterData - a model defined in Swagger
 
         :param login: The login of this UserRegisterData.  # noqa: E501
@@ -24,22 +24,27 @@ class UserRegisterData(Model):
         :type fullname: str
         :param password: The password of this UserRegisterData.  # noqa: E501
         :type password: str
+        :param account: The account of this UserRegisterData.  # noqa: E501
+        :type account: str
         """
         self.swagger_types = {
             'login': str,
             'fullname': str,
-            'password': str
+            'password': str,
+            'account': str
         }
 
         self.attribute_map = {
             'login': 'login',
             'fullname': 'fullname',
-            'password': 'password'
+            'password': 'password',
+            'account': 'account'
         }
 
         self._login = login
         self._fullname = fullname
         self._password = password
+        self._account = account
 
     @classmethod
     def from_dict(cls, dikt) -> 'UserRegisterData':
@@ -114,3 +119,24 @@ class UserRegisterData(Model):
         """
 
         self._password = password
+
+    @property
+    def account(self) -> str:
+        """Gets the account of this UserRegisterData.
+
+
+        :return: The account of this UserRegisterData.
+        :rtype: str
+        """
+        return self._account
+
+    @account.setter
+    def account(self, account: str):
+        """Sets the account of this UserRegisterData.
+
+
+        :param account: The account of this UserRegisterData.
+        :type account: str
+        """
+
+        self._account = account

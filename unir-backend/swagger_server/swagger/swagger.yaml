@@ -218,10 +218,13 @@ definitions:
         type: "string"
       password:
         type: "string"
+      account:
+        type: "string"
     example:
       password: "password"
       fullname: "fullname"
       login: "login"
+      account: "ES123123123123132"
   TransactionData:
     type: "object"
     properties:
