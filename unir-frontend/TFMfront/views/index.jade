@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js')
   script(src='/scripts/index.js')
   nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
@@ -23,20 +24,20 @@ block content
       .col-md-12.col-lg-6.col-sm-12
         .card
           .card-body
-            canvas#myChart
+            canvas#canvas
       .col-md-12.col-lg-6.col-sm-12
         .card
           .card-body
-            form(action='/home')
+            form#form-trx(action='/transactions')
               .form-group
                 label(for='txdate') Fecha
-                input#txdate.form-control(type='date', placeholder='Introduzca un importe')
+                input#txdate.form-control(name="txdate", type='date', placeholder='Introduzca un importe')
               .form-group
                 label(for='amount') Importe
-                input#amount.form-control(type='number', placeholder='Introduzca un importe')
+                input#amount.form-control(name="amount", type='number', placeholder='Introduzca un importe')
               .form-group
                 label(for='description') Descripción
-                input#description.form-control(type='text', placeholder='Introduzca una descripción')
-              button.btn.btn-trx(type='submit',id='add-trx') Añadir
+                input#description.form-control(name="description", type='text', placeholder='Introduzca una descripción')
+              button#add-trx.btn.btn-trx(type='submit') Añadir
 
           
