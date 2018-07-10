@@ -32,10 +32,12 @@ def select(query, args):
         return None
 
     cursor = cnx.cursor()
+    """
     print("SELECT {")
     print("\t" + str(query))
     print("\t" + str(args))
     print("}")
+    """
     cursor.execute(query, args)
 
     results = []
@@ -76,10 +78,12 @@ def exec(query, args):
         return None
 
     cursor = cnx.cursor()
+    """
     print("EXEC {")
     print("\t" + str(query))
     print("\t" + str(args))
     print("}")
+    """
     cursor.execute(query, args)
 
     cnx.commit()
