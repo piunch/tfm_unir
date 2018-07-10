@@ -24,7 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
 app.use('/', indexRouter);
-app.use('/index', indexRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/register', registerRouter);trxsRouter

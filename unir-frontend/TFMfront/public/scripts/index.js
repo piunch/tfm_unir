@@ -1,83 +1,94 @@
 $(document).ready(function(){
-    // $.ajax({
-    //     url: '/transactions',
-    //     success: drawChart(),
-    //     error: function() {
-    //         console.log("No se ha podido obtener la información");
-    //     }
-    // });
-	drawChart();
-	$('#add-trx').click(function() {
-		$('txdate')
-		alert(JSON.stringify($('#form-trx').serializeArray()));
-	});
-
+    $('#add-trx').click(function() {
+        $('txdate')
+        alert(JSON.stringify($('#form-trx').serializeArray()));
+    });
+    
+    getBalance();
+    getTransactions();
 });
 
-function drawChart() {
-	window.onload = function() {
-        function randomScalingFactor() {
-            return Math.round(Math.random() * 100 * (Math.random() > 0.5 ? -1 : 1));
-        }
-        function randomColorFactor() {
-            return Math.round(Math.random() * 255);
-        }
-        function randomColor(opacity) {
-            return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
-        }
-        function newDate(days) {
-            return moment().add(days, 'd').toDate();
-        }
-        function newDateString(days) {
-            return moment().add(days, 'd').format();
-        }
-        var config = {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: "Dataset with string point data",
-                    data: [{
-                        x: newDateString(0),
-                        y: randomScalingFactor()
-                    }, {
-                        x: newDateString(2),
-                        y: randomScalingFactor()
-                    }, {
-                        x: newDateString(4),
-                        y: randomScalingFactor()
-                    }, {
-                        x: newDateString(5),
-                        y: randomScalingFactor()
-                    }],
-                    fill: false
+function getTransactions() {
+    $.ajax({
+        type: "GET",
+        url: '/transactions/balace',
+        success: setBalance,
+    });
+}
+
+function getBalance() {
+    $.ajax({
+        type: "GET",
+        url: '/transactions',
+        success: drawChart,
+    });
+}
+
+function setBalance(response, statusText, code) {
+    console.log(response.current_balance);
+}
+
+function drawChart(transactions, statusText, code) {
+    for (let i = 0; i < transactions.length; i++) {
+        transactions[i].x = moment(transactions[i].x, 'YYYY-MM-DD').toDate();
+    }
+    function randomScalingFactor() {
+        return Math.round(Math.random() * 100 * (Math.random() > 0.5 ? -1 : 1));
+    }
+    function randomColorFactor() {
+        return Math.round(Math.random() * 255);
+    }
+    function randomColor(opacity) {
+        return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
+    }
+    var config = {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: "Balance de la cuenta Nómina",
+                pointRadius: 5,
+                pointBackgroundColor: "#E8A87C",
+                data: transactions,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            title:{
+                display:true,
+                text:"Balance de la cuenta"
+            },
+            scales: {
+                xAxes: [{
+                    type: "time",
+                    time: {
+                        displayFormat: 'es'
+                    },
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Fecha'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Balance'
+                    }
                 }]
             },
-            options: {
-                responsive: true,
-                title:{
-                    display:true,
-                    text:"Chart.js Time Point Data"
+            elements: {
+                line: {
+                    borderColor: "#E8A87C",
+                    borderWidth: 4
                 },
-                scales: {
-                    xAxes: [{
-                        type: "time",
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Date'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'value'
-                        }
-                    }]
+                point: {
+                    
                 }
             }
-		};
-		var ctx = document.getElementById("canvas").getContext("2d");
-        window.myLine = new Chart(ctx, config);
-	};
+        }
+    };
+    var ctx = document.getElementById("canvas").getContext("2d");
+    window.myLine = new Chart(ctx, config);
 }

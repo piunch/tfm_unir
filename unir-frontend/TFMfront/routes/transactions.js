@@ -1,9 +1,42 @@
 var express = require('express');
 var router = express.Router();
+var Client = require('node-rest-client').Client;
 
 /* GET all transactions */
 router.get('/', function(req, res, next) {
+    authToken = req.cookies.apikey.replace(/\"/g,'');
+    if (req.cookies.apikey == undefined) {
+        res.sendStatuss(401);
+        return;
+    }
 
+    var client = new Client();
+    var args = {
+        headers: { "api_key": authToken }
+    };
+
+    client.get("http://localhost:8080/v1/transaction", args, function (data, response) {
+        transactions = composeTransactions(data)
+        res.send(transactions);
+    });
+});
+
+/* GET all transactions */
+router.get('/balace', function(req, res, next) {
+    authToken = req.cookies.apikey.replace(/\"/g,'');
+    if (req.cookies.apikey == undefined) {
+        res.sendStatuss(401);
+        return;
+    }
+
+    var client = new Client();
+    var args = {
+        headers: { "api_key": authToken }
+    };
+
+    client.get("http://localhost:8080/v1/balace", args, function (data, response) {
+        res.send(JSON.stringify(data));
+    });
 });
 
 /* POST transactions details */
@@ -16,5 +49,18 @@ router.post('/', function(req, res) {
     // };
     res.send("kkfuti")
 });
+
+function composeTransactions(data) {
+    transactions = [];
+    for (let i = 0; i < data.length; i++) {
+        trx = {};
+        trx.x = data[i].trasnaction_date;
+        trx.y = data[i].current_balance;
+        transactions[i] = trx;
+    }
+    return transactions;
+}
+
+
 
 module.exports = router;
