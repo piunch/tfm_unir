@@ -35,5 +35,6 @@ ENTRYPOINT ["python3"]
 CMD ["-u", "-m", "swagger_server"]
 
 
-# Ejemplo de build
-# docker build --build-arg TOKEN_KEY=***** -build-arg BD_HOST=**** --build-arg BD_USER=**** --build-arg BD_PASSWORD=**** -t back .
+# EJEMPLO DE USO
+# docker build --build-arg TOKEN_KEY=***** -build-arg BD_HOST=**** --build-arg BD_USER=**** --build-arg BD_PASSWORD=**** -t tfmunirback .
+# docker run -d --name=tfmunirback unir-back

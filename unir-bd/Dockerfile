@@ -21,7 +21,6 @@ EXPOSE 3306
 
 CMD /usr/src/sql/bd_setup.sh
 
-
-# docker run --name=test-mysql mysql
-# docker build --build-arg MYSQL_USER=***** --build-arg MYSQL_PASSWORD=***** --build-arg MYSQL_ROOT_PASSWORD=***** -t bd .
-# docker run -dt --name=test-mysql --env="MYSQL_ROOT_PASSWORD=achusico123" mysql
+# EJEMPLO DE USO
+# docker build --build-arg MYSQL_USER=***** --build-arg MYSQL_PASSWORD=***** --build-arg MYSQL_ROOT_PASSWORD=***** -t tfmunirbd .
+# docker run -dt --name=unir-bd tfmunirbd
