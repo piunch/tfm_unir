@@ -93,7 +93,11 @@ def get_user():  # noqa: E501
     :rtype: List[User]
     """
 
-    token = connexion.request.headers['api_key']
+    if 'api_key' in  connexion.request.headers:
+        token = connexion.request.headers['api_key']
+    else:
+        return "Invalid credentials", 401
+
     user_id = check_crentials_token(token)
     
     if user_id is None:
