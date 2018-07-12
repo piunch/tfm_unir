@@ -1,9 +1,14 @@
 FROM mysql:5.7
 
-ENV MYSQL_DATABASE=TFMUNIRBD
-ENV MYSQL_USER=tfmunir
-ENV MYSQL_PASSWORD=achusico123
-ENV MYSQL_ROOT_PASSWORD=achusico.root.123
+ARG MYSQL_DATABASE=TFMUNIRBD
+ARG MYSQL_USER
+ARG MYSQL_PASSWORD
+ARG MYSQL_ROOT_PASSWORD
+
+ENV MYSQL_DATABASE=$MYSQL_DATABASE
+ENV MYSQL_USER=$MYSQL_USER
+ENV MYSQL_PASSWORD=$MYSQL_PASSWORD
+ENV MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
 
 ADD config/bd_setup.sql /usr/src/sql/
 ADD config/bd_setup.sh /usr/src/sql/
@@ -16,6 +21,6 @@ EXPOSE 3306
 
 CMD /usr/src/sql/bd_setup.sh
 
-
-# docker run --name=test-mysql mysql
-# docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=achusico123" mysql
+# EJEMPLO DE USO
+# docker build --build-arg MYSQL_USER=***** --build-arg MYSQL_PASSWORD=***** --build-arg MYSQL_ROOT_PASSWORD=***** -t tfmunirbd .
+# docker run -dt --name=unir-bd tfmunirbd
