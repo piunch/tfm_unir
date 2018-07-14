@@ -63,9 +63,9 @@ def add_transaction(transactionData):  # noqa: E501
         return "No se realizó el insert", 500
 
     account = query_result[0][0]
-    balance = query_result[0][1]
-    amount = query_result[0][2]
-    description = query_result[0][3]
+    amount = query_result[0][1]
+    description = query_result[0][2]
+    balance = query_result[0][3]
     date = query_result[0][4]
     transaction_id = query_result[0][5]
     transaction = Transaction(transaction_id, account, amount, description, balance, date)

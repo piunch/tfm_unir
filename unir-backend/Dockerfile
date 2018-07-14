@@ -36,5 +36,5 @@ CMD ["-u", "-m", "swagger_server"]
 
 
 # EJEMPLO DE USO
-# docker build --build-arg TOKEN_KEY=***** -build-arg BD_HOST=**** --build-arg BD_USER=**** --build-arg BD_PASSWORD=**** -t tfmunirback .
+# docker build --build-arg TOKEN_KEY=***** --build-arg BD_HOST=**** --build-arg BD_USER=**** --build-arg BD_PASSWORD=**** -t tfmunirback .
 # docker run -d --name=tfmunirback unir-back

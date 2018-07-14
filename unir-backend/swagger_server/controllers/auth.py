@@ -27,6 +27,9 @@ def login(credentials):  # noqa: E501
     if connexion.request.is_json:
         credentials = Credentials.from_dict(connexion.request.get_json())
 
+    if credentials.password is None or credentials.user is None:
+        return 'Las credenciales no coinciden con usuario alguno', 401
+
     # Convertir la contraseña a sha512
     hash_object = hashlib.sha512(credentials.password.encode('utf-8'))
     sha_512 = str(hash_object.hexdigest()).upper()

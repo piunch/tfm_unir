@@ -8,7 +8,12 @@ def select(query, args):
     try:    # Abrir la conexión
         
         config = configparser.ConfigParser()
-        config.read('config.ini')
+        config_files=config.read('config.ini')
+
+        if config is None or not config.has_section('BBDD'):
+            print("No se encuentra el config.ini en " + str(config_files) +" con los parametros de conexión para la BD")
+            return None
+
         bd_user = config['BBDD']['USER']
         bd_password = config['BBDD']['PASSWORD']
         bd_host = config['BBDD']['HOST']
@@ -54,7 +59,12 @@ def exec(query, args):
     try:    # Abrir la conexión
         
         config = configparser.ConfigParser()
-        config.read('config.ini')
+        config_files=config.read('config.ini')
+
+        if config is None or not config.has_section('BBDD'):
+            print("No se encuentra el config.ini en " + str(config_files) +" con los parametros de conexión para la BD")
+            return None
+
         bd_user = config['BBDD']['USER']
         bd_password = config['BBDD']['PASSWORD']
         bd_host = config['BBDD']['HOST']
