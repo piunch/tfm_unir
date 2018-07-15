@@ -1,5 +1,39 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js')
+  script(src='/scripts/index.js')
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    a.navbar-brand(href='/') Money's
+    button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+      span.navbar-toggler-icon
+    #navbarSupportedContent.collapse.navbar-collapse
+    a.navbar-brand.username #{username}
+    a.btn.btn-outline-success.my-2.my-sm-0(role="button", href="/logout") Desconectar
+  .jumbotron.jumbotron-index
+    .container
+      .row
+        .col-md-4.col-lg-4.col-sm-12
+          h2 Balance de la cuenta: 
+        .col-md-4.col-lg-4.col-sm-12        
+          h2#balance 
+  .container-fluid
+    .row
+      .col-md-12.col-lg-6.col-sm-12
+        .card
+          .card-body
+            canvas#canvas
+      .col-md-12.col-lg-6.col-sm-12
+        .card
+          .card-body
+            form#form-trx
+              .form-group
+                label(for='amount') Importe
+                input#amount.form-control(name="amount", type='number', placeholder='Introduzca un importe')
+              .form-group
+                label(for='description') Descripción
+                input#description.form-control(name="description", type='text', placeholder='Introduzca una descripción')
+              button#add-trx.btn.btn-trx Añadir
+
+          

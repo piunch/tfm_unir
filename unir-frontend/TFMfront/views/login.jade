@@ -1,20 +1,21 @@
 extends layout
 
 block content
+	script(src='/scripts/login.js')
 	.container
 		.row
 			.Absolute-Center.is-Responsive
 				.account-box
 					h2.center.boxtitle
 						| Iniciar sesión
-					form.form-signin(action='/login')
+					form#loginForm.form-signin(action='/login')
 						.form-group
-							input.form-control(type='text', placeholder='Email', required='', autofocus='')
+							input#user.form-control(type='text', placeholder='Usuario', required='', autofocus='')
 						.form-group
-							input.form-control(type='password', placeholder='Contraseña', required='')
+							input#password.form-control(type='password', placeholder='Contraseña', required='')
 						button.btn.btn-success.btn-block(type='submit')
 							| Entrar
 					.or-box
 						.row
 							.col-md-12.row-block
-								a.btn.btn-primary.btn-block(href='http://www.jquery2dotnet.com') Regístrate
+								a.btn.btn-primary.btn-block(href='/register') Regístrate
