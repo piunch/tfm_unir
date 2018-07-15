@@ -8,9 +8,8 @@ import hashlib
 from swagger_server.controllers.token import check_crentials_token, get_token_secret
 from  swagger_server.models.credentials import Credentials
 from swagger_server import util
-from random import randint, seed
 from json import JSONEncoder,loads
-from time import clock
+from time import time
 
 
 def login(credentials):  # noqa: E501
@@ -28,6 +27,9 @@ def login(credentials):  # noqa: E501
     if connexion.request.is_json:
         credentials = Credentials.from_dict(connexion.request.get_json())
 
+    if credentials.password is None or credentials.user is None:
+        return 'Las credenciales no coinciden con usuario alguno', 401
+
     # Convertir la contraseña a sha512
     hash_object = hashlib.sha512(credentials.password.encode('utf-8'))
     sha_512 = str(hash_object.hexdigest()).upper()
@@ -44,11 +46,11 @@ def login(credentials):  # noqa: E501
     
     # obtenemos la clave, creamos el token con los datos del usuario y lo devolvemos en forma de string
     secret_key = get_token_secret()
-    seed(clock())
+
     new_token = jwt.encode({'user': str(credentials.user),
                             'user_id': str(user_id),
                             'key': str(sha_512),
-                            'rand': str(randint(0, 99999999999))},
+                            'rand': str(time())},
                            secret_key, algorithm='HS256')
 
     new_token_str = str(new_token.decode("utf-8"))
@@ -63,8 +65,14 @@ def logout():  # noqa: E501
 
     :rtype: None
     """
+    
+    if 'api_key' in  connexion.request.headers:
+        token = connexion.request.headers['api_key']
+    else:
+        return "Invalid credentials", 401
 
-    token = connexion.request.headers['api_key']
+    
+
     user_id = check_crentials_token(token)
     
     if user_id is None:

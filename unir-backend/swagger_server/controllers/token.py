@@ -13,6 +13,8 @@ def check_crentials_token(token):
         decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
     except jwt.exceptions.InvalidSignatureError:
         return None
+    except jwt.exceptions.DecodeError:
+        return None
 
     return decoded_token["user_id"]
     

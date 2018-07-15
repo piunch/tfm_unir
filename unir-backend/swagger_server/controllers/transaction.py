@@ -22,7 +22,11 @@ def add_transaction(transactionData):  # noqa: E501
     :rtype: Transaction
     """
 
-    token = connexion.request.headers['api_key']
+    if 'api_key' in  connexion.request.headers:
+        token = connexion.request.headers['api_key']
+    else:
+        return "Invalid credentials", 401
+
     user_id = check_crentials_token(token)
     
     if user_id is None:
@@ -59,9 +63,9 @@ def add_transaction(transactionData):  # noqa: E501
         return "No se realizó el insert", 500
 
     account = query_result[0][0]
-    balance = query_result[0][1]
-    amount = query_result[0][2]
-    description = query_result[0][3]
+    amount = query_result[0][1]
+    description = query_result[0][2]
+    balance = query_result[0][3]
     date = query_result[0][4]
     transaction_id = query_result[0][5]
     transaction = Transaction(transaction_id, account, amount, description, balance, date)
@@ -78,7 +82,11 @@ def get_balance():  # noqa: E501
     :rtype: Balance
     """
 
-    token = connexion.request.headers['api_key']
+    if 'api_key' in  connexion.request.headers:
+        token = connexion.request.headers['api_key']
+    else:
+        return "Invalid credentials", 401
+
     user_id = check_crentials_token(token)
     
     if user_id is None:
@@ -113,7 +121,11 @@ def get_transactions(from_date=None):  # noqa: E501
     :rtype: List[Transaction]
     """
 
-    token = connexion.request.headers['api_key']
+    if 'api_key' in  connexion.request.headers:
+        token = connexion.request.headers['api_key']
+    else:
+        return "Invalid credentials", 401
+
     user_id = check_crentials_token(token)
     
     if user_id is None:

@@ -160,7 +160,7 @@ paths:
       security:
       - internalApiKey: []
       x-swagger-router-controller: "swagger_server.controllers.transaction"
-  /balace:
+  /balance:
     get:
       tags:
       - "Transaction"
@@ -261,7 +261,7 @@ definitions:
       description: "description"
       current_balance: 5
       id: 0
-      trasnaction_date: "trasnaction_date"
+      transaction_date: "transaction_date"
   Balance:
     type: "object"
     properties:
@@ -271,9 +271,9 @@ definitions:
       current_balance:
         type: "integer"
         format: "int32"
-      last_trasnaction_date:
+      last_transaction_date:
         type: "string"
     example:
       account_id: 0
       current_balance: 6
-      last_trasnaction_date: "last_trasnaction_date"
+      last_transaction_date: "last_transaction_date"
