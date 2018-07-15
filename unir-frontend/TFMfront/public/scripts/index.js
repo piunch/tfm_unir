@@ -39,7 +39,7 @@ function getTransactions() {
 }
 
 function setBalance(response, statusText, code) {
-    $('#balance').text(response.current_balance);
+    $('#balance').text(response.current_balance + " €");
 }
 
 function drawChart(transactions, statusText, code) {
