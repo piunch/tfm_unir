@@ -18,10 +18,10 @@ REQUIRES = ["connexion"]
 setup(
     name=NAME,
     version=VERSION,
-    description="Swagger Sample API",
+    description="TFM UNIR",
     author_email="",
     url="",
-    keywords=["Swagger", "Swagger Sample API"],
+    keywords=["Swagger", "TFM UNIR"],
     install_requires=REQUIRES,
     packages=find_packages(),
     package_data={'': ['swagger/swagger.yaml']},
@@ -29,7 +29,7 @@ setup(
     entry_points={
         'console_scripts': ['swagger_server=swagger_server.__main__:main']},
     long_description="""\
-    A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
+        TFM UNIR
     """
 )
 

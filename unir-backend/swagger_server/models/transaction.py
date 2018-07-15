@@ -15,7 +15,7 @@ class Transaction(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id: int=None, account_id: int=None, amount: int=None, description: str=None, current_balance: int=None, trasnaction_date: str=None):  # noqa: E501
+    def __init__(self, id: int=None, account_id: int=None, amount: int=None, description: str=None, current_balance: int=None, transaction_date: str=None):  # noqa: E501
         """Transaction - a model defined in Swagger
 
         :param id: The id of this Transaction.  # noqa: E501
@@ -28,8 +28,8 @@ class Transaction(Model):
         :type description: str
         :param current_balance: The current_balance of this Transaction.  # noqa: E501
         :type current_balance: int
-        :param trasnaction_date: The trasnaction_date of this Transaction.  # noqa: E501
-        :type trasnaction_date: str
+        :param transaction_date: The transaction_date of this Transaction.  # noqa: E501
+        :type transaction_date: str
         """
         self.swagger_types = {
             'id': int,
@@ -37,7 +37,7 @@ class Transaction(Model):
             'amount': int,
             'description': str,
             'current_balance': int,
-            'trasnaction_date': str
+            'transaction_date': str
         }
 
         self.attribute_map = {
@@ -46,7 +46,7 @@ class Transaction(Model):
             'amount': 'amount',
             'description': 'description',
             'current_balance': 'current_balance',
-            'trasnaction_date': 'trasnaction_date'
+            'transaction_date': 'transaction_date'
         }
 
         self._id = id
@@ -54,7 +54,7 @@ class Transaction(Model):
         self._amount = amount
         self._description = description
         self._current_balance = current_balance
-        self._trasnaction_date = trasnaction_date
+        self._transaction_date = transaction_date
 
     @classmethod
     def from_dict(cls, dikt) -> 'Transaction':
@@ -173,22 +173,22 @@ class Transaction(Model):
         self._current_balance = current_balance
 
     @property
-    def trasnaction_date(self) -> str:
-        """Gets the trasnaction_date of this Transaction.
+    def transaction_date(self) -> str:
+        """Gets the transaction_date of this Transaction.
 
 
-        :return: The trasnaction_date of this Transaction.
+        :return: The transaction_date of this Transaction.
         :rtype: str
         """
-        return self._trasnaction_date
+        return self._transaction_date
 
-    @trasnaction_date.setter
-    def trasnaction_date(self, trasnaction_date: str):
-        """Sets the trasnaction_date of this Transaction.
+    @transaction_date.setter
+    def transaction_date(self, transaction_date: str):
+        """Sets the transaction_date of this Transaction.
 
 
-        :param trasnaction_date: The trasnaction_date of this Transaction.
-        :type trasnaction_date: str
+        :param transaction_date: The transaction_date of this Transaction.
+        :type transaction_date: str
         """
 
-        self._trasnaction_date = trasnaction_date
+        self._transaction_date = transaction_date
