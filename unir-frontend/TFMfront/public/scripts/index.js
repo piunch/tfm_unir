@@ -22,15 +22,15 @@ function sendTransaction (trxData) {
     });
 }
 
-function getTransactions() {
+function getBalance() {
     $.ajax({
         type: "GET",
-        url: '/transactions/balace',
+        url: '/transactions/balance',
         success: setBalance,
     });
 }
 
-function getBalance() {
+function getTransactions() {
     $.ajax({
         type: "GET",
         url: '/transactions',
@@ -39,7 +39,7 @@ function getBalance() {
 }
 
 function setBalance(response, statusText, code) {
-    console.log(response.current_balance);
+    $('#balance').text(response.current_balance);
 }
 
 function drawChart(transactions, statusText, code) {
