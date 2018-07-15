@@ -1,12 +1,26 @@
 $(document).ready(function(){
     $('#add-trx').click(function() {
-        $('txdate')
-        alert(JSON.stringify($('#form-trx').serializeArray()));
+        trxData = {};
+        trxData.amount = $('#amount').val();
+        trxData.description = $('#description').val();
+        sendTransaction (trxData);
     });
     
     getBalance();
     getTransactions();
 });
+
+function sendTransaction (trxData) {
+    $.ajax({
+        type: "POST",
+        url: '/transactions',
+        dataType: 'json',
+        data: trxData,
+        success: function(response, statusText, code) {
+            alert (response);
+        },
+    });
+}
 
 function getTransactions() {
     $.ajax({

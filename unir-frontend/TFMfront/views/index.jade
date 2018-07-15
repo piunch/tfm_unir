@@ -25,16 +25,13 @@ block content
       .col-md-12.col-lg-6.col-sm-12
         .card
           .card-body
-            form#form-trx(action='/transactions')
-              .form-group
-                label(for='txdate') Fecha
-                input#txdate.form-control(name="txdate", type='date', placeholder='Introduzca un importe')
+            form#form-trx
               .form-group
                 label(for='amount') Importe
                 input#amount.form-control(name="amount", type='number', placeholder='Introduzca un importe')
               .form-group
                 label(for='description') Descripción
                 input#description.form-control(name="description", type='text', placeholder='Introduzca una descripción')
-              button#add-trx.btn.btn-trx(type='submit') Añadir
+              button#add-trx.btn.btn-trx Añadir
 
           

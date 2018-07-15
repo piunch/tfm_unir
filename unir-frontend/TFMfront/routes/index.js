@@ -10,8 +10,9 @@ router.get('/', function(req, res, next) {
   }
   authToken = req.cookies.apikey.replace(/\"/g,'');
 
+  authSecret = process.env.TOKEN_KEY;
   try {
-    var decoded = jwt.verify(authToken, '4chus1c0',  { algorithms: ['HS256'] });
+    var decoded = jwt.verify(authToken, authSecret,  { algorithms: ['HS256'] });
   } catch(error) {
     res.render('login', { title: 'Inicio de sesión' });
     return;
