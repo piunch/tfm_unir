@@ -36,7 +36,7 @@ router.get('/balance', function(req, res, next) {
     };
 
     client.get(`http://${config.backend.host}:${config.backend.port}/v1/balance`, args, function (data, response) {
-        res.send(JSON.stringify(data));
+        res.send(data);
     });
 });
 
