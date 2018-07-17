@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  script(src='/scripts/register.js')
+  .container
+    .row
+      .Absolute-Center.is-Responsive
+        .account-box
+          h2.center.boxtitle
+            | Registro
+          form#registerForm.form-signin(action='/register')
+            .form-group
+              input#fullname.form-control(type='text', placeholder='Nombre completo', required='', autofocus='')
+            .form-group
+              input#account.form-control(type='text', placeholder='Cuenta bancaria', required='', autofocus='')
+            .form-group
+              input#login.form-control(type='text', placeholder='Usuario', required='')
+            .form-group
+              input#password.form-control(type='password', placeholder='Contraseña', required='')
+            button.btn.btn-success.btn-block(type='submit')
+              | Regístrate
+          .or-box
+            .row
+              .col-md-12.row-block
+                button.btn.btn-primary.btn-block Regístrate 
