@@ -1,8 +1,9 @@
 const env = process.env.NODE_ENV;
+const prodHost = process.env.PRO_HOST;
 
 const test = {
     app: {
-        port: 8080
+        port: 8081
     },
     backend: {
         host: '172.18.0.3',
@@ -12,10 +13,10 @@ const test = {
 
 const prod = {
     app: {
-        port: 80
+        port: 8080
     },
     backend: {
-        host: '',
+        host: prodHost,
         port: 8080
     }
 };
