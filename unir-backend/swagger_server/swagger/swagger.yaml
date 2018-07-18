@@ -26,16 +26,12 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "login"
-        in: "formData"
+      - in: "body"
+        name: "credentials"
         description: "user login"
         required: true
-        type: "string"
-      - name: "password"
-        in: "formData"
-        description: "user password"
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/Credentials"
       responses:
         200:
           description: "valid login"
@@ -90,21 +86,12 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "login"
-        in: "formData"
+      - in: "body"
+        name: "userData"
         description: "user login"
         required: true
-        type: "string"
-      - name: "fullname"
-        in: "formData"
-        description: "user full name"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "formData"
-        description: "user password"
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/UserRegisterData"
       responses:
         200:
           description: "revoked"
@@ -155,16 +142,12 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "aumount"
-        in: "formData"
+      - in: "body"
+        name: "transactionData"
         description: "transaction amount"
         required: true
-        type: "string"
-      - name: "description"
-        in: "formData"
-        description: "transaction description"
-        required: false
-        type: "string"
+        schema:
+          $ref: "#/definitions/TransactionData"
       responses:
         200:
           description: "saved"
@@ -177,7 +160,7 @@ paths:
       security:
       - internalApiKey: []
       x-swagger-router-controller: "swagger_server.controllers.transaction"
-  /balace:
+  /balance:
     get:
       tags:
       - "Transaction"
@@ -202,6 +185,16 @@ securityDefinitions:
     name: "api_key"
     in: "header"
 definitions:
+  Credentials:
+    type: "object"
+    properties:
+      user:
+        type: "string"
+      password:
+        type: "string"
+    example:
+      password: "password"
+      user: "user"
   User:
     type: "object"
     properties:
@@ -216,6 +209,33 @@ definitions:
       id: 0
       fullname: "fullname"
       login: "login"
+  UserRegisterData:
+    type: "object"
+    properties:
+      login:
+        type: "string"
+      fullname:
+        type: "string"
+      password:
+        type: "string"
+      account:
+        type: "string"
+    example:
+      password: "password"
+      fullname: "fullname"
+      login: "login"
+      account: "ES123123123123132"
+  TransactionData:
+    type: "object"
+    properties:
+      amount:
+        type: "integer"
+        format: "int32"
+      description:
+        type: "string"
+    example:
+      amount: 0
+      description: "description"
   Transaction:
     type: "object"
     properties:
@@ -241,7 +261,7 @@ definitions:
       description: "description"
       current_balance: 5
       id: 0
-      trasnaction_date: "trasnaction_date"
+      transaction_date: "transaction_date"
   Balance:
     type: "object"
     properties:
@@ -251,9 +271,9 @@ definitions:
       current_balance:
         type: "integer"
         format: "int32"
-      last_trasnaction_date:
+      last_transaction_date:
         type: "string"
     example:
       account_id: 0
       current_balance: 6
-      last_trasnaction_date: "last_trasnaction_date"
+      last_transaction_date: "last_transaction_date"

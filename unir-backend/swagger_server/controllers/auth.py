@@ -2,32 +2,58 @@ import connexion
 import six
 import jwt
 import configparser
+import swagger_server.controllers.bbdd as bd
+import hashlib
+
+from swagger_server.controllers.token import check_crentials_token, get_token_secret
+from  swagger_server.models.credentials import Credentials
 from swagger_server import util
-from json import JSONEncoder
+from json import JSONEncoder,loads
+from time import time
 
 
-def login(login, password):
+def login(credentials):  # noqa: E501
     """login
 
     Obtiene un token a partir de usuario y contraseña válidos # noqa: E501
 
-    :param login: user login
-    :type login: str
-    :param _pass: user password
-    :type _pass: str
+    :param credentials: user login
+    :type credentials: dict | bytes
 
     :rtype: str
     """
+    
+    # obtener los datos del json
+    if connexion.request.is_json:
+        credentials = Credentials.from_dict(connexion.request.get_json())
 
-    # TODO: previamente hay que verificar los datos de login en la BD
-    # return '', 401
+    if credentials.password is None or credentials.user is None:
+        return 'Las credenciales no coinciden con usuario alguno', 401
 
+    # Convertir la contraseña a sha512
+    hash_object = hashlib.sha512(credentials.password.encode('utf-8'))
+    sha_512 = str(hash_object.hexdigest()).upper()
+
+    # Comprobamos las credenciales en BD y nos quedamos con la id
+    query = "SELECT USERID FROM USER WHERE USERNAME = %s AND PASSWORD = %s"
+    params = ( str(credentials.user).upper(), sha_512,)
+    query_result = bd.select(query, params)
+
+    if query_result is None or len(query_result) < 1:
+        return 'Las credenciales no coinciden con usuario alguno', 401
+    
+    user_id = query_result[0][0]
+    
     # obtenemos la clave, creamos el token con los datos del usuario y lo devolvemos en forma de string
     secret_key = get_token_secret()
-    new_token = jwt.encode({'user': 'miaumiaumiau'},
-                           secret_key, algorithm='HS256')
-    new_token_str = str(new_token)
 
+    new_token = jwt.encode({'user': str(credentials.user),
+                            'user_id': str(user_id),
+                            'key': str(sha_512),
+                            'rand': str(time())},
+                           secret_key, algorithm='HS256')
+
+    new_token_str = str(new_token.decode("utf-8"))
     return new_token_str, 200
 
 
@@ -39,22 +65,25 @@ def logout():  # noqa: E501
 
     :rtype: None
     """
+    
+    if 'api_key' in  connexion.request.headers:
+        token = connexion.request.headers['api_key']
+    else:
+        return "Invalid credentials", 401
 
-    token = connexion.request.headers['api_key']
+    
 
-    secret_key = get_token_secret()
-    decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
+    user_id = check_crentials_token(token)
+    
+    if user_id is None:
+        print("Intento de acceso con token incorrecto")
+        return "Invalid credentials", 401
 
-    return str(decoded_token)
+    return "OK", 200
 
 
 # Other functions
 
 
-def get_token_secret():
 
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    secret_key = config['AUTH']['TOKEN_KEY']
-
-    return secret_key
+    

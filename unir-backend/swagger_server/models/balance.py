@@ -15,31 +15,31 @@ class Balance(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, account_id: int=None, current_balance: int=None, last_trasnaction_date: str=None):  # noqa: E501
+    def __init__(self, account_id: int=None, current_balance: int=None, last_transaction_date: str=None):  # noqa: E501
         """Balance - a model defined in Swagger
 
         :param account_id: The account_id of this Balance.  # noqa: E501
         :type account_id: int
         :param current_balance: The current_balance of this Balance.  # noqa: E501
         :type current_balance: int
-        :param last_trasnaction_date: The last_trasnaction_date of this Balance.  # noqa: E501
-        :type last_trasnaction_date: str
+        :param last_transaction_date: The last_transaction_date of this Balance.  # noqa: E501
+        :type last_transaction_date: str
         """
         self.swagger_types = {
             'account_id': int,
             'current_balance': int,
-            'last_trasnaction_date': str
+            'last_transaction_date': str
         }
 
         self.attribute_map = {
             'account_id': 'account_id',
             'current_balance': 'current_balance',
-            'last_trasnaction_date': 'last_trasnaction_date'
+            'last_transaction_date': 'last_transaction_date'
         }
 
         self._account_id = account_id
         self._current_balance = current_balance
-        self._last_trasnaction_date = last_trasnaction_date
+        self._last_transaction_date = last_transaction_date
 
     @classmethod
     def from_dict(cls, dikt) -> 'Balance':
@@ -95,22 +95,22 @@ class Balance(Model):
         self._current_balance = current_balance
 
     @property
-    def last_trasnaction_date(self) -> str:
-        """Gets the last_trasnaction_date of this Balance.
+    def last_transaction_date(self) -> str:
+        """Gets the last_transaction_date of this Balance.
 
 
-        :return: The last_trasnaction_date of this Balance.
+        :return: The last_transaction_date of this Balance.
         :rtype: str
         """
-        return self._last_trasnaction_date
+        return self._last_transaction_date
 
-    @last_trasnaction_date.setter
-    def last_trasnaction_date(self, last_trasnaction_date: str):
-        """Sets the last_trasnaction_date of this Balance.
+    @last_transaction_date.setter
+    def last_transaction_date(self, last_transaction_date: str):
+        """Sets the last_transaction_date of this Balance.
 
 
-        :param last_trasnaction_date: The last_trasnaction_date of this Balance.
-        :type last_trasnaction_date: str
+        :param last_transaction_date: The last_transaction_date of this Balance.
+        :type last_transaction_date: str
         """
 
-        self._last_trasnaction_date = last_trasnaction_date
+        self._last_transaction_date = last_transaction_date
