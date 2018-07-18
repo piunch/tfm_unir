@@ -9,3 +9,5 @@ base_ami_server = "ami-08bc876d"
 base_ami_database = "ami-08bc876d"
 
 vpc_id = "vpc-73bf4a1b"
+
+aws_region = "us-east-2"
