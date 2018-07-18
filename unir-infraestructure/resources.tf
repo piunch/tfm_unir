@@ -8,14 +8,14 @@ resource "aws_security_group" "front_load_balancer_sg" {
   # Permitir conexion HTTP
   ingress {
     from_port   = 80
-    to_port     = 80
+    to_port     = 8080
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
     from_port   = 80
-    to_port     = 80
+    to_port     = 8080
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -76,6 +76,20 @@ resource "aws_security_group" "frontend_sg" {
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_security_group" "backend_sg" {
@@ -94,6 +108,20 @@ resource "aws_security_group" "backend_sg" {
   egress {
     from_port   = 22
     to_port     = 22
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 80
+    to_port     = 80
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -150,6 +178,15 @@ resource "aws_security_group" "database_sg" {
   }
 }
 
+resource "aws_subnet" "main_subnet" {
+  vpc_id     = "${var.vpc_id}"
+  cidr_block = "172.31.16.0/20"
+
+  tags {
+    Name = "Main Subnet"
+  }
+}
+
 ####### FRONTEND INSTANCES #######
 
 resource "aws_instance" "frontend_server_1" {
@@ -157,11 +194,12 @@ resource "aws_instance" "frontend_server_1" {
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_frontend_key}"
   associate_public_ip_address = "true"
+  private_ip                  = "172.31.16.20"
   availability_zone           = "us-east-2c"
-  subnet_id                   = "subnet-466f1d0b"
+  subnet_id                   = "${aws_subnet.main_subnet.id}"
 
   tags {
-    Name = "FrontEnd"
+    Name = "FrontEnd 1"
   }
 
   depends_on      = ["aws_security_group.frontend_sg"]
@@ -173,11 +211,12 @@ resource "aws_instance" "frontend_server_2" {
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_frontend_key}"
   associate_public_ip_address = "true"
+  private_ip                  = "172.31.16.21"
   availability_zone           = "us-east-2c"
-  subnet_id                   = "subnet-466f1d0b"
+  subnet_id                   = "${aws_subnet.main_subnet.id}"
 
   tags {
-    Name = "FrontEnd"
+    Name = "FrontEnd 2"
   }
 
   depends_on      = ["aws_security_group.frontend_sg"]
@@ -187,15 +226,16 @@ resource "aws_instance" "frontend_server_2" {
 ####### BACKEND INSTANCES #######
 
 resource "aws_instance" "backend_server_1" {
-  ami                         = "${var.base_ami_database}"
+  ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_backend_key}"
   associate_public_ip_address = "true"
+  private_ip                  = "172.31.16.22"
   availability_zone           = "us-east-2c"
-  subnet_id                   = "subnet-466f1d0b"
+  subnet_id                   = "${aws_subnet.main_subnet.id}"
 
   tags {
-    Name = "BackEnd"
+    Name = "BackEnd 1"
   }
 
   depends_on      = ["aws_security_group.backend_sg"]
@@ -203,15 +243,16 @@ resource "aws_instance" "backend_server_1" {
 }
 
 resource "aws_instance" "backend_server_2" {
-  ami                         = "${var.base_ami_database}"
+  ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_backend_key}"
   associate_public_ip_address = "true"
+  private_ip                  = "172.31.16.23"
   availability_zone           = "us-east-2c"
-  subnet_id                   = "subnet-466f1d0b"
+  subnet_id                   = "${aws_subnet.main_subnet.id}"
 
   tags {
-    Name = "BackEnd"
+    Name = "BackEnd 2"
   }
 
   depends_on      = ["aws_security_group.backend_sg"]
@@ -221,12 +262,13 @@ resource "aws_instance" "backend_server_2" {
 ####### DATABASE INSTANCE #######
 
 resource "aws_instance" "database_server" {
-  ami                         = "${var.base_ami_database}"
+  ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_db_key}"
   associate_public_ip_address = "true"
+  private_ip                  = "172.31.16.24"
   availability_zone           = "us-east-2c"
-  subnet_id                   = "subnet-466f1d0b"
+  subnet_id                   = "${aws_subnet.main_subnet.id}"
 
   tags {
     Name = "Database"
@@ -241,7 +283,7 @@ resource "aws_elb" "frontend_lb" {
   availability_zones = ["us-east-2c"]
 
   listener {
-    instance_port     = 80
+    instance_port     = 8080
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
@@ -261,7 +303,7 @@ resource "aws_elb" "frontend_lb" {
 resource "aws_elb" "backend_lb" {
   name     = "backend-lb"
   internal = true
-  subnets  = ["subnet-466f1d0b"]
+  subnets  = ["${aws_subnet.main_subnet.id}"]
 
   listener {
     instance_port     = 8080
