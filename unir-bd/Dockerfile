@@ -25,4 +25,4 @@ CMD /usr/src/sql/bd_setup.sh
 
 # EJEMPLO DE USO
 # docker build --build-arg MYSQL_USER=***** --build-arg MYSQL_PASSWORD=***** --build-arg MYSQL_ROOT_PASSWORD=***** -t tfmunirbd .
-# docker run -dt --name=unir-bd tfmunirbd
+# docker run -dt --name=unir-bd -e TEST=true tfmunirbd

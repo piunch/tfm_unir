@@ -16,4 +16,8 @@ mysql -e "CREATE USER '${MYSQL_USER}' IDENTIFIED BY '${MYSQL_PASSWORD}';"
 mysql -e "GRANT ALL PRIVILEGES ON TFMUNIRBD.* TO '${MYSQL_USER}'@'%'; FLUSH PRIVILEGES;"
 
 echo "[Terminado]"
+service mysql stop
+usermod -d /var/lib/mysql/ mysql
+service mysql start
+
 mysql
