@@ -4,7 +4,7 @@ EXPOSE 8080
 
 RUN mkdir -p /usr/node
 WORKDIR /usr/node
-RUN git clone https://github.com/piunch/tfm_unir.git
+COPY . /usr/node
 
 CMD cd /usr/node/tfm_unir/unir-frontend/TFMfront \
     && npm install && npm start
