@@ -13,16 +13,12 @@
           src: unir-frontend.tar
           dest: /usr/images/unir-frontend.tar
       - name: Borrar contenedor anterior
-        command:
-          command: if [ -n "$(docker container ls -a -q)" ]; then docker container rm -v -f $(docker container ls -a -q); fi
+        command: if [ -n "$(docker container ls -a -q)" ]; then docker container rm -v -f $(docker container ls -a -q); fi
       - name: Borrar imagen anterior
-        command:
-          command: if [ -n "$(docker images unir/frontend -q)" ]; then docker rmi -f $(docker images unir/front -q); fi
+        command: if [ -n "$(docker images unir/frontend -q)" ]; then docker rmi -f $(docker images unir/front -q); fi
       - name: Cargar imagen Frontend
-        command:
+        command: docker load < unir-frontend.tar
           chdir: /usr/images
-          command: docker load < unir-frontend.tar
       - name: Correr la imagen Frontend
-        command:
+        command: docker run --env NODE_ENV=prod --env PRO_HOST={{ lookup('env', 'PRO_HOST') }} --env TOKEN_KEY={{ lookup('env', 'TOKEN_KEY_PRO') }} --name unir/front -p8080:8080 -dt unir/front
           chdir: /usr/images
-          command: docker run --env NODE_ENV=prod --env PRO_HOST={{ lookup('env', 'PRO_HOST') }} --env TOKEN_KEY={{ lookup('env', 'TOKEN_KEY_PRO') }} --name unir/front -p8080:8080 -dt unir/front
