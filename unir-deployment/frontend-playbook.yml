@@ -18,7 +18,9 @@
         command: if [ -n "$(docker images unir/frontend -q)" ]; then docker rmi -f $(docker images unir/front -q); fi
       - name: Cargar imagen Frontend
         command: docker load < unir-frontend.tar
+        args:
           chdir: /usr/images
       - name: Correr la imagen Frontend
         command: docker run --env NODE_ENV=prod --env PRO_HOST={{ lookup('env', 'PRO_HOST') }} --env TOKEN_KEY={{ lookup('env', 'TOKEN_KEY_PRO') }} --name unir/front -p8080:8080 -dt unir/front
+        args:
           chdir: /usr/images
