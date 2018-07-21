@@ -6,7 +6,7 @@ RUN mkdir -p /usr/node
 WORKDIR /usr/node
 COPY . /usr/node
 
-CMD cd /usr/node/tfm_unir/unir-frontend/TFMfront \
+CMD cd /usr/node \
     && npm install && npm start
 
 # docker build -t frontend .
