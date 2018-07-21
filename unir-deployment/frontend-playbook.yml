@@ -15,7 +15,7 @@
       - name: Preparar imagen y contenedor
         script: gestionaImagen.sh unir/front unir-frontend.tar
       - name: Cargar imagen Frontend
-        command: docker load < unir-frontend.tar
+        command: docker load --input unir-frontend.tar
         args:
           chdir: /usr/images
       - name: Correr la imagen Frontend
