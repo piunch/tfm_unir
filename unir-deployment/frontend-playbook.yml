@@ -12,10 +12,8 @@
         copy:
           src: unir-frontend.tar
           dest: /usr/images/unir-frontend.tar
-      - name: Borrar contenedor anterior
-        command: if [ -n "$(docker container ls -a -q)" ]; then docker container rm -v -f $(docker container ls -a -q); fi
-      - name: Borrar imagen anterior
-        command: if [ -n "$(docker images unir/frontend -q)" ]; then docker rmi -f $(docker images unir/front -q); fi
+      - name: Preparar imagen y contenedor
+        script: gestionaImagen.sh unir/front unir-frontend.tar
       - name: Cargar imagen Frontend
         command: docker load < unir-frontend.tar
         args:
