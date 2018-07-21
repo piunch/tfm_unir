@@ -8,22 +8,21 @@
           path: /usr/images
           state: directory
           recurse: yes
-      - name: Copiar imagen
+      - name: Copiar imagen Frontend
         copy:
           src: unir-frontend.tar
           dest: /usr/images/unir-frontend.tar
-      - name: Borrar los contenedores actuales
+      - name: Borrar contenedor anterior
         command:
-          command: if [ -n "$(docker container ls -a -q)" ]; then docker container rm -f $(docker container ls -a -q); fi
-      - name: Borrar las imagenes actuales
+          command: if [ -n "$(docker container ls -a -q)" ]; then docker container rm -v -f $(docker container ls -a -q); fi
+      - name: Borrar imagen anterior
         command:
-          command: if [ -n "$(docker images unir/frontend -q)" ]; then docker rmi -f $(docker images unir/frontend -q); fi
-      - name: Cargar imagen
+          command: if [ -n "$(docker images unir/frontend -q)" ]; then docker rmi -f $(docker images unir/front -q); fi
+      - name: Cargar imagen Frontend
         command:
           chdir: /usr/images
           command: docker load < unir-frontend.tar
-      - name: Correr la imagen
+      - name: Correr la imagen Frontend
         command:
           chdir: /usr/images
-          command: docker run --env NODE_ENV=pro --env PRO_HOST={{ lookup('env', 'PRO_HOST') }} --env TOKEN_KEY=tost4da --name frontend -p8080:8080 -dt unir/frontend
-
+          command: docker run --env NODE_ENV=prod --env PRO_HOST={{ lookup('env', 'PRO_HOST') }} --env TOKEN_KEY={{ lookup('env', 'TOKEN_KEY_PRO') }} --name unir/front -p8080:8080 -dt unir/front
