@@ -8,21 +8,21 @@ output "back_lb_dns" {
 }
 
 output "front1_ip" {
-  value = "${aws_instance.frontend_server_1.public_ip}"
+  value = "${aws_instance.frontend_server_1.private_ip}"
 }
 
 output "front2_ip" {
-  value = "${aws_instance.frontend_server_2.public_ip}"
+  value = "${aws_instance.frontend_server_2.private_ip}"
 }
 
 output "back1_ip" {
-  value = "${aws_instance.backend_server_1.public_ip}"
+  value = "${aws_instance.backend_server_1.private_ip}"
 }
 
 output "back2_ip" {
-  value = "${aws_instance.frontend_server_2.public_ip}"
+  value = "${aws_instance.frontend_server_2.private_ip}"
 }
 
 output "db_ip" {
-  value = "${aws_instance.database_server.public_ip}"
+  value = "${aws_instance.database_server.private_ip}"
 }
