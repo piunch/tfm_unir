@@ -279,9 +279,8 @@ resource "aws_instance" "database_server" {
 }
 
 resource "aws_elb" "frontend_lb" {
-  name               = "frontend-lb"
-  availability_zones = ["us-east-2c"]
-  subnets            = ["${aws_subnet.main_subnet.id}"]
+  name    = "frontend-lb"
+  subnets = ["${aws_subnet.main_subnet.id}"]
 
   listener {
     instance_port     = 8080
