@@ -5,6 +5,7 @@ EXPOSE 8080
 RUN mkdir -p /usr/node
 WORKDIR /usr/node
 COPY . /usr/node
+RUN npm install
 
 CMD cd /usr/node && npm start
 
