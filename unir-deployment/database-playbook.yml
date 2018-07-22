@@ -1,0 +1,24 @@
+---
+  - hosts: database
+    become: yes
+
+    tasks:
+      - name: Crear directorio de imagenes
+        file:
+          path: /usr/images
+          state: directory
+          recurse: yes
+      - name: Copiar imagen Database
+        copy:
+          src: unir-database.tar
+          dest: /usr/images/unir-database.tar
+      - name: Preparar imagen y contenedor
+        script: gestionaImagen.sh unir/bd unir-database.tar
+      - name: Cargar imagen Database
+        command: docker load --input unir-database.tar
+        args:
+          chdir: /usr/images
+      - name: Correr la imagen Database
+        command: docker run --name unir-database -e TEST=false -p3306:3306  -dt unir/bd
+        args:
+          chdir: /usr/images
