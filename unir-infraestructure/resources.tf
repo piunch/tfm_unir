@@ -47,7 +47,7 @@ resource "aws_security_group" "frontend_sg" {
   description = "FrontEnd Security Group"
   vpc_id      = "${var.vpc_id}"
 
-  # Permitir conexion ssh
+  # Permitir conexion ssh 
   ingress {
     from_port   = 22
     to_port     = 22
