@@ -1,0 +1,24 @@
+---
+  - hosts: backend
+    become: yes
+
+    tasks:
+      - name: Crear directorio de imagenes
+        file:
+          path: /usr/images
+          state: directory
+          recurse: yes
+      - name: Copiar imagen Backend
+        copy:
+          src: unir-backend.tar
+          dest: /usr/images/unir-backend.tar
+      - name: Preparar imagen y contenedor
+        script: gestionaImagen.sh unir/back unir-backend.tar
+      - name: Cargar imagen Backend
+        command: docker load --input unir-backend.tar
+        args:
+          chdir: /usr/images
+      - name: Correr la imagen Backend
+        command: docker run --name unir-backend -e TOKEN_KEY={{ lookup('env', 'TOKEN_KEY_PRO') }} -e BD_NAME=TFMUNIRBD -e BD_USER={{ lookup('env', 'BD_USER_PRO') }} -e BD_PASSWORD={{ lookup('env', 'BD_PASSWORD_PRO') }} -e BD_HOST={{ lookup('env', 'IP_HOST_BD_PRO') }} -p8080:8080 -d unir/back
+        args:
+          chdir: /usr/images

@@ -1,0 +1,25 @@
+---
+  - hosts: frontend
+    become: yes
+    vars:
+      pro_host: "{{ pro_host }}"
+    tasks:
+      - name: Crear directorio de imagenes
+        file:
+          path: /usr/images
+          state: directory
+          recurse: yes
+      - name: Copiar imagen Frontend
+        copy:
+          src: unir-frontend.tar
+          dest: /usr/images/unir-frontend.tar
+      - name: Preparar imagen y contenedor
+        script: gestionaImagen.sh unir/front unir-frontend.tar
+      - name: Cargar imagen Frontend
+        command: docker load --input unir-frontend.tar
+        args:
+          chdir: /usr/images
+      - name: Correr la imagen Frontend
+        command: docker run --env NODE_ENV=prod --env PRO_HOST={{ pro_host }} --env TOKEN_KEY={{ lookup('env', 'TOKEN_KEY_PRO') }} --name frontend -p8080:8080 -dt unir/front
+        args:
+          chdir: /usr/images

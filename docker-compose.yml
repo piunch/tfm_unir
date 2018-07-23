@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  db:
+    build:
+      context: unir-bd
+      args:
+        MYSQL_USER: tfmunir
+        MYSQL_PASSWORD: 123456
+        MYSQL_ROOT_PASSWORD: toor
+    environment:
+      TEST: "true"
+    image: tfmunirbd
+    restart: always 
+    networks:
+      testnet:
+        ipv4_address: 172.32.0.4
+  back:
+    build:
+      context: unir-backend
+    environment:
+      TOKEN_KEY: cuackcuack
+      BD_HOST: 172.32.0.4
+      BD_USER: tfmunir
+      BD_PASSWORD: 123456
+    image: tfmunirback
+    depends_on:
+      - db
+    networks:
+      testnet:
+        ipv4_address: 172.32.0.6
+    ports:    
+      - "8080:8080"
+    restart: always
+    
+networks:
+  testnet:
+    driver: bridge
+    ipam:
+     config:
+      - subnet: 172.32.0.0/16
+
+    

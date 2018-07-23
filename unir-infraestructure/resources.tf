@@ -140,6 +140,21 @@ resource "aws_security_group" "backend_sg" {
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  # Permitir conexion con BD
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_security_group" "database_sg" {
@@ -279,8 +294,8 @@ resource "aws_instance" "database_server" {
 }
 
 resource "aws_elb" "frontend_lb" {
-  name               = "frontend-lb"
-  availability_zones = ["us-east-2c"]
+  name    = "frontend-lb"
+  subnets = ["${aws_subnet.main_subnet.id}"]
 
   listener {
     instance_port     = 8080

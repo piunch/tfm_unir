@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 service mysql start
+service mysql stop
+usermod -d /var/lib/mysql/ mysql
+service mysql start
 
 echo "Generando BD..."
 mysql < /usr/src/sql/bd_setup.sql
