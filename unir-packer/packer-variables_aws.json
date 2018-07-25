@@ -1,0 +1,7 @@
+{
+  "ssh_username_aws": "ubuntu",
+  "ami_name": "PackerUnirTFM",
+  "source_ami": "ami-916f59f4",
+  "vpc_id": "vpc-73bf4a1b",
+  "security_group": "sg-cd96b5a5"
+}
