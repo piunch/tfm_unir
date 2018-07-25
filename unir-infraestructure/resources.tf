@@ -47,7 +47,7 @@ resource "aws_security_group" "frontend_sg" {
   description = "FrontEnd Security Group"
   vpc_id      = "${var.vpc_id}"
 
-  # Permitir conexion ssh
+  # Permitir conexion ssh 
   ingress {
     from_port   = 22
     to_port     = 22
@@ -208,7 +208,7 @@ resource "aws_instance" "frontend_server_1" {
   ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_frontend_key}"
-  associate_public_ip_address = "true"
+  associate_public_ip_address = "false"
   private_ip                  = "172.31.16.20"
   availability_zone           = "us-east-2c"
   subnet_id                   = "${aws_subnet.main_subnet.id}"
@@ -225,7 +225,7 @@ resource "aws_instance" "frontend_server_2" {
   ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_frontend_key}"
-  associate_public_ip_address = "true"
+  associate_public_ip_address = "false"
   private_ip                  = "172.31.16.21"
   availability_zone           = "us-east-2c"
   subnet_id                   = "${aws_subnet.main_subnet.id}"
@@ -244,7 +244,7 @@ resource "aws_instance" "backend_server_1" {
   ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_backend_key}"
-  associate_public_ip_address = "true"
+  associate_public_ip_address = "false"
   private_ip                  = "172.31.16.22"
   availability_zone           = "us-east-2c"
   subnet_id                   = "${aws_subnet.main_subnet.id}"
@@ -261,7 +261,7 @@ resource "aws_instance" "backend_server_2" {
   ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_backend_key}"
-  associate_public_ip_address = "true"
+  associate_public_ip_address = "false"
   private_ip                  = "172.31.16.23"
   availability_zone           = "us-east-2c"
   subnet_id                   = "${aws_subnet.main_subnet.id}"
@@ -280,7 +280,7 @@ resource "aws_instance" "database_server" {
   ami                         = "${var.base_ami_server}"
   instance_type               = "t2.micro"
   key_name                    = "${var.ssh_db_key}"
-  associate_public_ip_address = "true"
+  associate_public_ip_address = "false"
   private_ip                  = "172.31.16.24"
   availability_zone           = "us-east-2c"
   subnet_id                   = "${aws_subnet.main_subnet.id}"
