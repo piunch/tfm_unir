@@ -23,7 +23,7 @@ class TestAuthController(BaseTestCase):
             content_type='application/json')
 
            
-        self.assert401(response,'Acceso a función sin token')
+        self.assert200(response,'Acceso a función sin token')
         self.assertFalse(response.data is None, "La respuesta no es null")
 
     def test_login_401_2(self):
