@@ -1,5 +1,5 @@
 ## Requirements
-Python 3.5.1
+Python 3.5.2+
 
 ## Usage
 To run the server, please execute the following from the root directory:
